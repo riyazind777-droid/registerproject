@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body{
+            align-items: center;
+        }
+        form {
+            border: 1px solid black;
+            width: fit-content;
+            padding: 10px;
+
+        }
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px;
+        }
+
+        .error {
+            color: red;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 8px;
+        }
+
+        .success input {
+            border: 2px solid green;
+        }
+
+        .error input {
+            border: 2px solid red;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <center>
+    <div  class="container">
+        <form id="form">
+            <h1>Register</h1>
+            <div class="input">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+                <div class="error"></div>
+            </div>
+            <div class="input">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email">
+                <div class="error"></div>
+            </div>
+            <div class="input">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+                <div class="error"></div>
+            </div>
+            <button type="submit" id="submitBtn" disabled>Save</button>
+        </form>
+
+    </div>
+
+    <script>
+        var form = document.getElementById("form");
+        var username = document.getElementById("username");
+        var email = document.getElementById("email");
+        var password = document.getElementById("password");
+        var submitBtn = document.getElementById("submitBtn");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            validateInputs();
+
+        })
+        username.addEventListener("input", validateInputs);
+        email.addEventListener("input", validateInputs);
+        password.addEventListener("input", validateInputs);
+
+        function validateInputs() {
+
+
+            let isValid = true;
+
+            var usernameval = username.value.trim();
+            var emailval = email.value.trim();
+            var passwordval = password.value.trim();
+
+            if (usernameval === '') {
+                setError(username, 'Username is required')
+                isValid = false;
+            }
+            else {
+                setSuccess(username);
+            }
+
+
+            if (emailval === '') {
+                setError(email, 'Email is required');
+                isValid = false;
+            }
+            else if (!validateEmail(emailval)) {
+                setError(email, 'please enter a valid email')
+                isValid = false;
+            }
+            else {
+                setSuccess(email)
+            }
+
+            if (passwordval === '') {
+                setError(password, 'please enter the password');
+                isValid = false;
+            }
+            else if (passwordval.length < 6) {
+                setError(password, 'password must be atleast 6 character')
+                isValid = false;
+            }
+            else {
+                setSuccess(password)
+            }
+
+            submitBtn.disabled = !isValid;
+
+        }
+
+        function setError(element, message) {
+            var input = element.parentElement;
+            var errorElement = input.querySelector('.error')
+
+            errorElement.innerText = message;
+            input.classList.add('error');
+            input.classList.remove('success');
+
+        }
+
+        function setSuccess(element) {
+            var input = element.parentElement;
+            var errorElement = input.querySelector('.error')
+
+            errorElement.innerText = '';
+
+            input.classList.add('success');
+            input.classList.remove('error');
+
+
+        }
+
+        var validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                )
+
+        }
+
+
+
+
+
+    </script>
+    </center>
+
+</body>
+
+</html>
